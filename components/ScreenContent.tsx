@@ -19,7 +19,7 @@ export const ScreenContent = () => {
       <View className="flex-1 gap-3">
         <View className="mx-4 h-72">
           <Text className="text-red-500">
-            Using className=&quot;text-red-500&quot;
+            Setting className=&quot;text-red-500&quot;
           </Text>
           <CartesianChart
             data={data}
@@ -41,7 +41,7 @@ export const ScreenContent = () => {
         </View>
         <View className="mx-4 h-72">
           <Text className="text-primary">
-            Using className=&quot;text-primary&quot;
+            (Bug) - Setting className=&quot;text-primary&quot;
           </Text>
           <CartesianChart
             data={data}
@@ -63,7 +63,7 @@ export const ScreenContent = () => {
         </View>
         <View className="mx-4 h-72">
           <Text className="text-primary">
-            Using color=&quot;{colorPrimaryHsl}&quot; from
+            Setting color=&quot;{colorPrimaryHsl}&quot; from
             useUnstableNativeVariable(&apos;--color-primary&apos;)
           </Text>
           <CartesianChart
