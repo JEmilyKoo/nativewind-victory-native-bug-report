@@ -1,25 +1,89 @@
-import { Text, View } from 'react-native';
+import { View, Text } from 'react-native';
+import { useUnstableNativeVariable, cssInterop } from 'nativewind';
+import { CartesianChart, Line } from 'victory-native';
+import { data } from '../data';
 
-import { EditScreenInfo } from './EditScreenInfo';
+const StyledLine = cssInterop(Line, {
+  className: {
+    target: false,
+    nativeStyleToProp: {
+      color: 'color',
+    },
+  },
+});
 
-type ScreenContentProps = {
-  title: string;
-  path: string;
-  children?: React.ReactNode;
-};
-
-export const ScreenContent = ({ title, path, children }: ScreenContentProps) => {
-  return (
-    <View className={styles.container}>
-      <Text className={styles.title}>{title}</Text>
-      <View className={styles.separator} />
-      <EditScreenInfo path={path} />
-      {children}
-    </View>
-  );
-};
-const styles = {
-  container: `items-center flex-1 justify-center`,
-  separator: `h-[1px] my-7 w-4/5 bg-gray-200`,
-  title: `text-xl font-bold`,
-};
+export const ScreenContent = () => {
+  const rawColorPrimaryHsl = useUnstableNativeVariable('--color-primary');
+    const colorPrimaryHsl = `hsl(${rawColorPrimaryHsl?.split(' ').join(', ')})`;
+    return (
+      <View className="flex-1 gap-3">
+        <View className="mx-4 h-72">
+          <Text className="text-red-500">
+            Using className=&quot;text-red-500&quot;
+          </Text>
+          <CartesianChart
+            data={data}
+            xKey="date"
+            yKeys={['balance']}
+            xAxis={{ lineWidth: 0 }}
+            yAxis={[{ lineWidth: 0 }]}
+          >
+            {({ points }) => (
+              <>
+                <StyledLine
+                  points={points.balance}
+                  strokeWidth={1}
+                  className="text-red-500"
+                />
+              </>
+            )}
+          </CartesianChart>
+        </View>
+        <View className="mx-4 h-72">
+          <Text className="text-primary">
+            Using className=&quot;text-primary&quot;
+          </Text>
+          <CartesianChart
+            data={data}
+            xKey="date"
+            yKeys={['balance']}
+            xAxis={{ lineWidth: 0 }}
+            yAxis={[{ lineWidth: 0 }]}
+          >
+            {({ points }) => (
+              <>
+                <StyledLine
+                  points={points.balance}
+                  strokeWidth={1}
+                  className="text-primary"
+                />
+              </>
+            )}
+          </CartesianChart>
+        </View>
+        <View className="mx-4 h-72">
+          <Text className="text-primary">
+            Using color=&quot;{colorPrimaryHsl}&quot; from
+            useUnstableNativeVariable(&apos;--color-primary&apos;)
+          </Text>
+          <CartesianChart
+            data={data}
+            xKey="date"
+            yKeys={['balance']}
+            xAxis={{ lineWidth: 0 }}
+            yAxis={[{ lineWidth: 0 }]}
+          >
+            {({ points }) => (
+              <>
+                <StyledLine
+                  points={points.balance}
+                  strokeWidth={1}
+                  color={colorPrimaryHsl}
+                />
+              </>
+            )}
+          </CartesianChart>
+        </View>
+      </View>
+    );
+}
